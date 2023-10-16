@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+
 import './App.css';
+import Previewer from './components/previewer';
+import Editor from './components/editor';
+import { useDispatch, useSelector } from 'react-redux';
+import { changed } from './redux/store';
+import Card from './components/card';
 
 function App() {
+  const dispatch = useDispatch();
+  const content = useSelector((state) => state.content)
+
+  const editorOnChange = (event) => {
+    dispatch(changed(event.target.value))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='cell'>
+        <Card title='Editor'>
+          <Editor content={content} handleOnChange={editorOnChange} />
+        </Card>
+      </div>
+      <div className='cell'>
+        <Card title='Previewer'>
+          <Previewer content={content} />
+        </Card>
+      </div>
     </div>
   );
 }
